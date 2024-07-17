@@ -41,6 +41,7 @@ const Layout = () => {
                 placeholder="Search Countries"
                 name=""
                 id=""
+                className="outline-none border-[1px] border-[#000] p-[5px_10px] rounded-[20px]"
               />
             </div>
           </div>
