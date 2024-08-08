@@ -1,8 +1,13 @@
+import { useState } from "react";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <>
+      <div className="home_component">
+        Home
+      </div>
+    </>
+  );
+};
 
-export default Home
+export default Home;

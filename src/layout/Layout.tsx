@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 
 // Images
 import logoHeader from "../assets/logo_rest_countries.png";
+import { TextField } from "@mui/material";
 
 const Layout = () => {
   return (
@@ -36,12 +37,18 @@ const Layout = () => {
               </ul>
             </nav>
             <div className="block_3_header">
-              <input
+              {/* <input
                 type="search"
                 placeholder="Search Countries"
                 name=""
                 id=""
                 className="outline-none border-[1px] border-[#000] p-[5px_10px] rounded-[20px]"
+              /> */}
+              <TextField
+                id="outlined-basic"
+                label="Search Countries"
+                variant="outlined"
+                type="search"
               />
             </div>
           </div>
