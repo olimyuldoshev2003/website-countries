@@ -12,7 +12,7 @@ export const getCountries: AsyncThunk<void, void, AsyncThunkConfig> =
         }`
       );
         
-        console.log(data);
+        return data
         
     } catch (error) {
       console.error(error);
