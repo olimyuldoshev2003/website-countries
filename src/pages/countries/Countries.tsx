@@ -23,7 +23,7 @@ const Countries = () => {
 
   return (
     <>
-      <div className="countries_page">
+      <div className="countries_page max-w-[1440px] mx-auto">
         {loadingCountries ? (
           <div>
             <h1>Loading...</h1>
