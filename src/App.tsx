@@ -3,6 +3,7 @@ import Layout from './layout/Layout'
 import Home from './pages/home/Home'
 import Countries from './pages/countries/Countries'
 import Country from './pages/country/Country'
+import CountriesByRegion from './pages/countriesByRegion/CountriesByRegion'
 
 const App = () => {
 
@@ -20,9 +21,14 @@ const App = () => {
           element: <Countries />,
         },
         {
-          path: `/country/:id`,
+          path: `country/:id`,
           element: <Country />,
-        }
+        },
+        {
+          path: `region/:id`,
+          element: <CountriesByRegion />,
+        },
+
       ]
     }
   ])

@@ -2,14 +2,15 @@ import { Link, Outlet } from "react-router-dom";
 import "./style.css";
 import { useEffect, useRef, useState } from "react";
 import logoHeader from "../assets/logo_rest_countries.png";
-import { TextField } from "@mui/material";
+import { Button, Dialog, TextField } from "@mui/material";
 
 const Layout = () => {
   // States
   const [menuClass, setMenuClass] = useState("menu_bar unclicked");
   const [pagesClass, setPagesClass] = useState("pages_hidden");
-  const [isMenuClicked, setIsMenuClicked] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [isMenuClicked, setIsMenuClicked] = useState<boolean>(false);
+  const [showOverlay, setShowOverlay] = useState<boolean>(false);
+  const [modalRegions, setModalRegions] = useState<boolean>(false);
 
   // Refs for click-outside detection
   const menuRef = useRef<HTMLDivElement>(null);
@@ -32,6 +33,10 @@ const Layout = () => {
     }
     setIsMenuClicked(!isMenuClicked);
   };
+
+  function handleCloseModalRegions() {
+    setModalRegions(false);
+  }
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -76,7 +81,11 @@ const Layout = () => {
       )} */}
 
       <div
-        className={`${showOverlay ? `sm:block md:hidden` : `hidden`} fixed inset-0 bg-black bg-opacity-50 z-30`}
+        className={`${
+          showOverlay
+            ? `sm:pointer-events-auto md:hidden bg-black bg-opacity-50`
+            : `pointer-events-none bg-white bg-opacity-0`
+        } fixed inset-0 z-30 duration-300`}
         onClick={toggleMenu}
       />
 
@@ -115,7 +124,7 @@ const Layout = () => {
           </nav>
 
           {/* Search Field - Desktop */}
-          <div className="block_3_header sm:hidden md:block">
+          <div className="block_input_search_and_btn_regions_modal sm:hidden md:flex md:items-center md:gap-2">
             <TextField
               sx={{
                 "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
@@ -133,6 +142,16 @@ const Layout = () => {
               variant="outlined"
               type="search"
             />
+            <Button
+              variant="contained"
+              className="text-sm"
+              color="warning"
+              onClick={() => {
+                setModalRegions(true);
+              }}
+            >
+              Open Modal Regions
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -158,7 +177,6 @@ const Layout = () => {
           </button>
         </div>
       </header>
-
       {/* Mobile Navigation Menu */}
       <div
         ref={menuRef}
@@ -184,7 +202,7 @@ const Layout = () => {
             </Link>
           </li>
         </ul>
-        <div className="block_input_search px-5 mt-6">
+        <div className="block_input_search_and_btn_regions_modal_mobile_size px-5 mt-6">
           <TextField
             sx={{
               "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
@@ -203,8 +221,100 @@ const Layout = () => {
             type="search"
             fullWidth
           />
+          <Button
+            variant="contained"
+            className="text-sm"
+            color="warning"
+            fullWidth
+            sx={{
+              marginTop: "20px",
+            }}
+            onClick={() => {
+              setModalRegions(true);
+              setMenuClass("menu_bar unclicked");
+              setPagesClass("pages_hidden");
+              setShowOverlay(false);
+            }}
+          >
+            Open Modal Regions
+          </Button>
         </div>
       </div>
+
+      {/* Modal Regions */}
+      <Dialog
+        open={modalRegions}
+        onClose={handleCloseModalRegions}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <div className="block_btn_close_modal bg-[#020261] flex justify-end pr-3">
+          <span
+            className="text-white text-4xl cursor-pointer"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            &times;
+          </span>
+        </div>
+        <div className="block_modal-regions grid grid-cols-2 gap-4 p-4 w-[280px] place-items-center h-[250px] bg-[#020261] text-white text-[19px]">
+          <Link
+            to={`/region/asia`}
+            className="region_1"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            Asia
+          </Link>
+          <Link
+            to={`/region/europe`}
+            className="region_2"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            Europe
+          </Link>
+          <Link
+            to={`/region/america`}
+            className="region_3"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            America
+          </Link>
+          <Link
+            to={`/region/atlantic`}
+            className="region_4"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            Antarctic
+          </Link>
+          <Link
+            to={`/africa`}
+            className="region_5"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            Africa
+          </Link>
+          <Link
+            to={`/oceania`}
+            className="region_6"
+            onClick={() => {
+              setModalRegions(false);
+            }}
+          >
+            Oceania
+          </Link>
+        </div>
+      </Dialog>
 
       {/* Page Content */}
       <Outlet />

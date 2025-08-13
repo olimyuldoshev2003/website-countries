@@ -5,7 +5,7 @@ const EachCountry: React.FC<any> = ({ country }) => {
   return (
     <>
       <Link to={`/country/${country.name.common}`}>
-        <div className="country px-3 py-2 rounded-md bg-[#035f53] text-white">
+        <div className="country px-3 py-2 rounded-md bg-[#035f53] text-white hover:scale-105 transition-all duration-300">
           <div className="block_img flex justify-center">
             <img
               className="h-[200px] object-contain"
@@ -23,8 +23,8 @@ const EachCountry: React.FC<any> = ({ country }) => {
           </h2>
           <h2 className="text-[20px] font-bold text-center mt-2">
             <span className="font-normal">Languages: </span>
-            {Object.values(country.languages || {}).map((item:any) => {
-              return <h1 className="text-[16px] font-bold"> {item}</h1>
+            {Object.values(country.languages || {}).map((item: any) => {
+              return <h1 className="text-[16px] font-bold"> {item}</h1>;
             })}
           </h2>
           <h4 className="text-[18px] text-center font-bold mt-3">

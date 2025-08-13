@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const Country = () => {
   const { id } = useParams();
 
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState<any>([]);
 
   async function getCountryByName() {
     try {
@@ -31,7 +31,7 @@ const Country = () => {
         <h1>
           Capital: <span>{country?.capital?.at(0)}</span>
         </h1>
-              {country?.altSpellings?.map((item, index) => {
+              {country?.altSpellings?.map((item:any, index:number) => {
             
        return (
          <h1 className="flex items-center gap-3">

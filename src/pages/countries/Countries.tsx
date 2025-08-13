@@ -6,11 +6,11 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { getCountries } from "../../api/api";
 import EachCountry from "../../components/eachCountry/EachCountry";
 import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
+  // FormControl,
+  // InputLabel,
+  // MenuItem,
+  // Select,
+  // SelectChangeEvent,
   TextField,
 } from "@mui/material";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -19,8 +19,8 @@ const Countries = () => {
   const dispatch = useAppDispatch();
 
   const [inpSearchCountries, setInpSearchCountries] = useState<string>("");
-  const [inpFilterCountriesByRegion, setInpFilterCountriesByRegion] =
-    useState<string>("");
+  // const [inpFilterCountriesByRegion, setInpFilterCountriesByRegion] =
+  //   useState<string>("");
 
   // Add debounce with 500ms delay
   const debouncedSearchTerm = useDebounce(inpSearchCountries, 500);
@@ -40,17 +40,15 @@ const Countries = () => {
     setInpSearchCountries(event.target.value);
   }
 
-  function handleChangeInpFilterCountries(event: SelectChangeEvent<string>) {
-    setInpFilterCountriesByRegion(event.target.value);
-  }
+  // function handleChangeInpFilterCountries(event: SelectChangeEvent<string>) {
+  //   setInpFilterCountriesByRegion(event.target.value);
+  // }
 
   useEffect(() => {
     if (debouncedSearchTerm !== undefined) {
-      dispatch(
-        getCountries({ debouncedSearchTerm, inpFilterCountriesByRegion })
-      );
+      dispatch(getCountries( debouncedSearchTerm ));
     }
-  }, [dispatch, debouncedSearchTerm, inpFilterCountriesByRegion]);
+  }, [dispatch, debouncedSearchTerm]);
 
   return (
     <>
@@ -70,7 +68,7 @@ const Countries = () => {
               value={inpSearchCountries}
               onChange={handleChangeInpSearchCountries}
             />
-            <FormControl
+            {/* <FormControl
               sx={{
                 width: `320px`,
               }}
@@ -93,7 +91,7 @@ const Countries = () => {
                 <MenuItem value={`africa`}>Africa</MenuItem>
                 <MenuItem value={`oceania`}>Oceania</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </div>
         </div>
         <div className="block_countries">
