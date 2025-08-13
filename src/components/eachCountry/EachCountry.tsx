@@ -5,10 +5,7 @@ const EachCountry: React.FC<any> = ({ country }) => {
   return (
     <>
       <Link to={`/country/${country.name.common}`}>
-        <div
-          className="country border-[1px] border-[#7f7f7f] px-3 py-2 rounded-sm"
-          key={country.id}
-        >
+        <div className="country px-3 py-2 rounded-md bg-[#035f53] text-white">
           <div className="block_img flex justify-center">
             <img
               className="h-[200px] object-contain"
@@ -16,9 +13,28 @@ const EachCountry: React.FC<any> = ({ country }) => {
               alt=""
             />
           </div>
-          <h1 className="text-[20px] font-medium text-center mt-5">
+          <h1 className="text-[20px] font-bold text-center mt-5">
+            <span className="font-normal">Name of the country: </span>
             {country.name.common}
           </h1>
+          <h2 className="text-[20px] font-bold text-center mt-2">
+            <span className="font-normal">Capital: </span> {country.capital}
+            {}
+          </h2>
+          <h2 className="text-[20px] font-bold text-center mt-2">
+            <span className="font-normal">Languages: </span>
+            {Object.values(country.languages || {}).map((item:any) => {
+              return <h1 className="text-[16px] font-bold"> {item}</h1>
+            })}
+          </h2>
+          <h4 className="text-[18px] text-center font-bold mt-3">
+            <span className="font-normal">Region: </span>
+            {country.region}
+          </h4>
+          <h5 className="text-[16px] text-center font-bold ">
+            <span className="font-normal">Subregion: </span>
+            {country.subregion}
+          </h5>
         </div>
       </Link>
     </>

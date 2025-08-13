@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { getCountries } from "../api/api";
 
-const initialState = {
+interface ICountriesReducer {
+  countries: any,
+  loadingCountries: boolean,
+
+}
+
+const initialState: ICountriesReducer = {
   countries: [],
   loadingCountries: false,
 };
@@ -15,6 +21,7 @@ export const restCountriesSlice = createSlice({
     builder
       .addCase(getCountries.pending, (state) => {
         state.loadingCountries = true;
+        state.countries = []
       })
       .addCase(getCountries.fulfilled, (state, action) => {
         {
@@ -23,6 +30,7 @@ export const restCountriesSlice = createSlice({
         }
       }).addCase(getCountries.rejected, (state) => {
         state.loadingCountries = false
+        state.countries = []
       })
   },
 });
