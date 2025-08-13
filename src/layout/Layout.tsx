@@ -21,12 +21,14 @@ const Layout = () => {
       setMenuClass("menu_bar clicked");
       setPagesClass("pages_visible");
       setShowOverlay(true);
-      document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+      document.body.classList.add("scroll_hidden");
+      document.body.classList.remove("scroll_visible");
     } else {
       setMenuClass("menu_bar unclicked");
       setPagesClass("pages_hidden");
       setShowOverlay(false);
-      document.body.style.overflow = ""; // Re-enable scrolling
+      document.body.classList.add("scroll_visible");
+      document.body.classList.remove("scroll_hidden");
     }
     setIsMenuClicked(!isMenuClicked);
   };
@@ -160,7 +162,7 @@ const Layout = () => {
       {/* Mobile Navigation Menu */}
       <div
         ref={menuRef}
-        className={`pages_mobile_size ${pagesClass} md:hidden bg-[#020261] fixed top-[100px] py-[20px] w-full z-40 transition-all duration-300`}
+        className={`pages_mobile_size ${pagesClass} md:hidden bg-[#020261] fixed top-[100px] py-[20px] w-full z-40`}
       >
         <ul className="flex flex-col items-center justify-center gap-[20px]">
           <li>
