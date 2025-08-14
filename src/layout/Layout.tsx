@@ -393,7 +393,9 @@ const Layout = () => {
       {/* Updated Modal Search */}
       <div
         className={`background_modal_search fixed ${
-          isMenuClicked ? `sm:top-[21.7rem] flex` : `sm:top-[6.2rem] sm:hidden md:flex`
+          isMenuClicked
+            ? `sm:top-[21.7rem] flex`
+            : `sm:top-[6.2rem] sm:hidden md:flex`
         } md:top-[100px] left-0 w-full h-full z-50 justify-center items-center bg-black bg-opacity-50 ${
           modalSearch
             ? "opacity-100 pointer-events-auto"
