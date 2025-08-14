@@ -103,14 +103,10 @@ const Layout = () => {
     }
   };
 
-  const handleSearchFocus = (isMobile: boolean) => {
+  const handleSearchFocus = () => {
     setIsFocused(true);
     setModalSearch(true);
     document.body.style.overflow = "hidden";
-
-    if (!isMobile && mobileInputRef.current) {
-      mobileInputRef.current.blur();
-    }
   };
 
   const handleSearchBlur = () => {
@@ -189,7 +185,7 @@ const Layout = () => {
               label="Search Countries"
               variant="outlined"
               type="search"
-              onFocus={() => handleSearchFocus(false)}
+              onFocus={() => handleSearchFocus()}
               onBlur={handleSearchBlur}
               value={searchValue}
               onChange={(
@@ -285,7 +281,7 @@ const Layout = () => {
             type="search"
             fullWidth
             value={searchValue}
-            onFocus={() => handleSearchFocus(true)}
+            onFocus={() => handleSearchFocus()}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => {
