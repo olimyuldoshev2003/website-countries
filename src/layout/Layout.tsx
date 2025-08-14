@@ -28,6 +28,8 @@ const Layout = () => {
     height: window.innerHeight,
   });
 
+  //States frtom Redux Toolkit
+
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -56,6 +58,22 @@ const Layout = () => {
       document.body.classList.remove("scroll_hidden");
     }
     setIsMenuClicked(!isMenuClicked);
+  };
+  const handleLinkClick = () => {
+    if (isMenuClicked) {
+      toggleMenu();
+    }
+  };
+
+  const handleSearchFocus = () => {
+    setIsFocused(true);
+    setModalSearch(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  const handleSearchBlur = () => {
+    setIsFocused(false);
+    document.body.style.overflow = "unset";
   };
 
   function handleCloseModalRegions() {
@@ -96,23 +114,6 @@ const Layout = () => {
       }
     }
   }, [windowSize.width, modalSearch]);
-
-  const handleLinkClick = () => {
-    if (isMenuClicked) {
-      toggleMenu();
-    }
-  };
-
-  const handleSearchFocus = () => {
-    setIsFocused(true);
-    setModalSearch(true);
-    document.body.style.overflow = "hidden";
-  };
-
-  const handleSearchBlur = () => {
-    setIsFocused(false);
-    document.body.style.overflow = "unset";
-  };
 
   return (
     <div className="layout_component">
