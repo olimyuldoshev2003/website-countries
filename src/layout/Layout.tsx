@@ -11,6 +11,9 @@ const Layout = () => {
   const [isMenuClicked, setIsMenuClicked] = useState<boolean>(false);
   const [showOverlay, setShowOverlay] = useState<boolean>(false);
   const [modalRegions, setModalRegions] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [modalSearch, setModalSearch] = useState<boolean>(false);
 
   // Refs for click-outside detection
   const menuRef = useRef<HTMLDivElement>(null);
@@ -91,7 +94,7 @@ const Layout = () => {
 
       <header className="header bg-[#020261] sticky top-0 w-full z-40">
         <div className="header_block max-w-[1440px] m-[0_auto] md:px-[60px] sm:px-[20px] flex justify-between items-center py-[20px]">
-          <div className="block_1_header">
+          <div className={`block_1_header`}>
             <Link to="/">
               <img
                 className="w-[60px]"
@@ -102,7 +105,7 @@ const Layout = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="navbar">
+          <nav className={`navbar ${isFocused ? "hidden" : "block"}`}>
             <ul className="sm:hidden md:flex md:items-center md:gap-2">
               <li>
                 <Link
@@ -127,6 +130,8 @@ const Layout = () => {
           <div className="block_input_search_and_btn_regions_modal sm:hidden md:flex md:items-center md:gap-2">
             <TextField
               sx={{
+                transition: "all 0.3s ease",
+                width: isFocused ? "80%" : "200px",
                 "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "rgba(255, 255, 255, 0.7)" },
@@ -136,15 +141,34 @@ const Layout = () => {
                   "&.Mui-focused fieldset": { borderColor: "#90caf9" },
                 },
                 "& .MuiInputBase-input": { color: "white" },
+                ...(isFocused && {
+                  position: "absolute",
+                  right: 0,
+                  margin: `0 auto`,
+                  paddingRight: "40px",
+                }),
               }}
               id="outlined-basic"
               label="Search Countries"
               variant="outlined"
               type="search"
+              onFocus={() => {
+                setIsFocused(true);
+              }}
+              onBlur={() => {
+                setIsFocused(false);
+              }}
             />
             <Button
               variant="contained"
-              className="text-sm"
+              className={`text-sm`}
+              sx={{
+                ...(isFocused
+                  ? {
+                      display: "none",
+                    }
+                  : { display: "block" }),
+              }}
               color="warning"
               onClick={() => {
                 setModalRegions(true);
