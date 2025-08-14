@@ -248,7 +248,10 @@ const Layout = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <div className="block_btn_close_modal bg-[#020261] flex justify-end pr-3">
+        <div className="block_btn_close_modal bg-[#020261] flex justify-between items-center px-3">
+          <span className="text-white text-[17px]">
+            Find countries by region
+          </span>
           <span
             className="text-white text-4xl cursor-pointer"
             onClick={() => {
@@ -258,6 +261,7 @@ const Layout = () => {
             &times;
           </span>
         </div>
+
         <div className="block_modal-regions grid grid-cols-2 gap-4 p-4 w-[280px] place-items-center h-[250px] bg-[#020261] text-white text-[19px]">
           <Link
             to={`/region/asia`}
@@ -296,7 +300,7 @@ const Layout = () => {
             Antarctic
           </Link>
           <Link
-            to={`/africa`}
+            to={`/region/africa`}
             className="region_5"
             onClick={() => {
               setModalRegions(false);
@@ -305,7 +309,7 @@ const Layout = () => {
             Africa
           </Link>
           <Link
-            to={`/oceania`}
+            to={`/region/oceania`}
             className="region_6"
             onClick={() => {
               setModalRegions(false);

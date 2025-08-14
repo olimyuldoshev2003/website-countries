@@ -1,12 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Layout from './layout/Layout'
-import Home from './pages/home/Home'
-import Countries from './pages/countries/Countries'
-import Country from './pages/country/Country'
-import CountriesByRegion from './pages/countriesByRegion/CountriesByRegion'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./layout/Layout";
+import Home from "./pages/home/Home";
+import Countries from "./pages/countries/Countries";
+import Country from "./pages/country/Country";
+import CountriesByRegion from "./pages/countriesByRegion/CountriesByRegion";
+import NotFound from "./pages/notFound/NotFound";
 
 const App = () => {
-
   const router = createBrowserRouter([
     {
       path: `/`,
@@ -14,7 +14,7 @@ const App = () => {
       children: [
         {
           index: true,
-          element: <Home/>,
+          element: <Home />,
         },
         {
           path: `countries`,
@@ -28,16 +28,19 @@ const App = () => {
           path: `region/:id`,
           element: <CountriesByRegion />,
         },
-
-      ]
-    }
-  ])
+      ],
+    },
+    {
+      path: `*`,
+      element: <NotFound />,
+    },
+  ]);
 
   return (
     <>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
