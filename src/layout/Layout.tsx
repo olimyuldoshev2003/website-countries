@@ -30,6 +30,9 @@ const Layout = () => {
 
   //States frtom Redux Toolkit
 
+  const searchedCountries = useAppSelector((state) => state.restCountriesSlice.searchedCountries);
+  
+
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
