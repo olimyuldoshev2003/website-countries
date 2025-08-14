@@ -15,9 +15,30 @@ const Layout = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [modalSearch, setModalSearch] = useState<boolean>(false);
 
-  // Refs for click-outside detection
+  // Refs
   const menuRef = useRef<HTMLDivElement>(null);
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
+  const modalSearchRef = useRef<HTMLDivElement>(null);
+  const desktopInputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
+
+  // Track window size
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Toggle mobile menu
   const toggleMenu = () => {
@@ -55,41 +76,56 @@ const Layout = () => {
       }
     };
 
-    // Add event listener when menu is open
     if (isMenuClicked) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.body.style.overflow = ""; // Cleanup on unmount
+      document.removeEventListener("click", handleClickOutside);
+      document.body.style.overflow = "";
     };
   }, [isMenuClicked]);
 
-  // Close menu when a link is clicked
+  // Handle search modal state across screen sizes
+  useEffect(() => {
+    if (modalSearch && windowSize.width >= 768) {
+      // When resizing to desktop/tablet, ensure modal stays open
+      setModalSearch(true);
+      if (desktopInputRef.current) {
+        desktopInputRef.current.focus();
+      }
+    }
+  }, [windowSize.width, modalSearch]);
+
   const handleLinkClick = () => {
     if (isMenuClicked) {
       toggleMenu();
     }
   };
 
+  const handleSearchFocus = (isMobile: boolean) => {
+    setIsFocused(true);
+    setModalSearch(true);
+    document.body.style.overflow = "hidden";
+
+    if (!isMobile && mobileInputRef.current) {
+      mobileInputRef.current.blur();
+    }
+  };
+
+  const handleSearchBlur = () => {
+    setIsFocused(false);
+    document.body.style.overflow = "unset";
+  };
+
   return (
     <div className="layout_component">
-      {/* Overlay */}
-      {/* {showOverlay && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
-          onClick={toggleMenu}
-        />
-      )} */}
-
       <div
         className={`${
           showOverlay
             ? `sm:pointer-events-auto md:hidden bg-black bg-opacity-50`
             : `pointer-events-none bg-white bg-opacity-0`
-        } fixed inset-0 z-30 duration-300`}
-        onClick={toggleMenu}
+        } fixed inset-0 z-0 duration-300`}
       />
 
       <header className="header bg-[#020261] sticky top-0 w-full z-40">
@@ -104,7 +140,6 @@ const Layout = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className={`navbar ${isFocused ? "hidden" : "block"}`}>
             <ul className="sm:hidden md:flex md:items-center md:gap-2">
               <li>
@@ -126,9 +161,10 @@ const Layout = () => {
             </ul>
           </nav>
 
-          {/* Search Field - Desktop */}
+          {/* Desktop Search Field - Updated */}
           <div className="block_input_search_and_btn_regions_modal sm:hidden md:flex md:items-center md:gap-2">
             <TextField
+              inputRef={desktopInputRef}
               sx={{
                 transition: "all 0.3s ease",
                 width: isFocused ? "80%" : "200px",
@@ -146,17 +182,20 @@ const Layout = () => {
                   right: 0,
                   margin: `0 auto`,
                   paddingRight: "40px",
+                  zIndex: `5`,
                 }),
               }}
-              id="outlined-basic"
+              id="desktop-search-input"
               label="Search Countries"
               variant="outlined"
               type="search"
-              onFocus={() => {
-                setIsFocused(true);
-              }}
-              onBlur={() => {
-                setIsFocused(false);
+              onFocus={() => handleSearchFocus(false)}
+              onBlur={handleSearchBlur}
+              value={searchValue}
+              onChange={(
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => {
+                setSearchValue(event.target.value);
               }}
             />
             <Button
@@ -178,7 +217,6 @@ const Layout = () => {
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             ref={burgerButtonRef}
             className="btn_menu_mobile_size sm:block md:hidden cursor-pointer outline-none"
@@ -201,7 +239,7 @@ const Layout = () => {
           </button>
         </div>
       </header>
-      {/* Mobile Navigation Menu */}
+
       <div
         ref={menuRef}
         className={`pages_mobile_size ${pagesClass} md:hidden bg-[#020261] fixed top-[100px] py-[20px] w-full z-40`}
@@ -227,7 +265,9 @@ const Layout = () => {
           </li>
         </ul>
         <div className="block_input_search_and_btn_regions_modal_mobile_size px-5 mt-6">
+          {/* Mobile Search Field - Updated */}
           <TextField
+            inputRef={mobileInputRef}
             sx={{
               "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
               "& .MuiOutlinedInput-root": {
@@ -239,11 +279,18 @@ const Layout = () => {
               },
               "& .MuiInputBase-input": { color: "white" },
             }}
-            id="outlined-basic"
+            id="mobile-search-input"
             label="Search Countries"
             variant="outlined"
             type="search"
             fullWidth
+            value={searchValue}
+            onFocus={() => handleSearchFocus(true)}
+            onChange={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => {
+              setSearchValue(event.target.value);
+            }}
           />
           <Button
             variant="contained"
@@ -265,7 +312,6 @@ const Layout = () => {
         </div>
       </div>
 
-      {/* Modal Regions */}
       <Dialog
         open={modalRegions}
         onClose={handleCloseModalRegions}
@@ -344,10 +390,33 @@ const Layout = () => {
         </div>
       </Dialog>
 
-      {/* Page Content */}
-      <Outlet />
+      {/* Updated Modal Search */}
+      <div
+        className={`background_modal_search fixed ${
+          isMenuClicked ? `sm:top-[21.7rem] flex` : `sm:top-[6.2rem] sm:hidden md:flex`
+        } md:top-[100px] left-0 w-full h-full z-50 justify-center items-center bg-black bg-opacity-50 ${
+          modalSearch
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        } transition-opacity duration-300`}
+        ref={modalSearchRef}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            setModalSearch(false);
+            setSearchValue("");
+            document.body.style.overflow = "unset";
+          }
+        }}
+      >
+        <div
+          className={`modal_search bg-white p-[10px] absolute top-[20px] w-[77%] md:right-[40px] shadow-2xl rounded-md z-50`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h1>Search Results</h1>
+        </div>
+      </div>
 
-      {/* Footer */}
+      <Outlet />
       <footer className="footer"></footer>
     </div>
   );
