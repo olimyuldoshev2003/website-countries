@@ -3,8 +3,13 @@ import "./style.css";
 import { useEffect, useRef, useState } from "react";
 import logoHeader from "../assets/logo_rest_countries.png";
 import { Button, Dialog, TextField } from "@mui/material";
+import { useAppSelector } from "../hooks/useAppSelector";
+import { useAppDispatch } from "../hooks/useAppDispatch";
+import { getSearchedCountries } from "../api/api";
 
 const Layout = () => {
+  const dispatch = useAppDispatch();
+
   // States
   const [menuClass, setMenuClass] = useState("menu_bar unclicked");
   const [pagesClass, setPagesClass] = useState("pages_hidden");
@@ -30,8 +35,12 @@ const Layout = () => {
 
   //States frtom Redux Toolkit
 
-  const searchedCountries = useAppSelector((state) => state.restCountriesSlice.searchedCountries);
-  
+  const searchedCountries = useAppSelector(
+    (state) => state.restCountriesSlice.searchedCountries
+  );
+  const loadingSearchedCountries = useAppSelector(
+    (state) => state.restCountriesSlice.loadingSearchedCountries
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -117,6 +126,14 @@ const Layout = () => {
       }
     }
   }, [windowSize.width, modalSearch]);
+
+  useEffect(() => {
+    if (searchValue.trim() !== "") {
+      dispatch(getSearchedCountries(searchValue));
+    } else {
+      dispatch(getSearchedCountries(""));
+    }
+  }, [searchValue, dispatch]);
 
   return (
     <div className="layout_component">
@@ -265,7 +282,6 @@ const Layout = () => {
           </li>
         </ul>
         <div className="block_input_search_and_btn_regions_modal_mobile_size px-5 mt-6">
-          {/* Mobile Search Field - Updated */}
           <TextField
             inputRef={mobileInputRef}
             sx={{
@@ -284,8 +300,10 @@ const Layout = () => {
             variant="outlined"
             type="search"
             fullWidth
+            onFocus={() => {
+              handleSearchFocus();
+            }}
             value={searchValue}
-            onFocus={() => handleSearchFocus()}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
             ) => {
@@ -390,7 +408,6 @@ const Layout = () => {
         </div>
       </Dialog>
 
-      {/* Updated Modal Search */}
       <div
         className={`background_modal_search fixed ${
           isMenuClicked
@@ -411,10 +428,34 @@ const Layout = () => {
         }}
       >
         <div
-          className={`modal_search bg-white p-[10px] absolute top-[20px] w-[77%] md:right-[40px] shadow-2xl rounded-md z-50`}
+          className={`modal_search bg-white p-[10px] absolute top-[20px] w-[77%] md:right-[40px] shadow-2xl rounded-md z-50 max-h-[80vh] overflow-auto`}
           onClick={(e) => e.stopPropagation()}
         >
-          <h1>Search Results</h1>
+          {
+            loadingSearchedCountries ? (
+              <div className="flex justify-center items-center h-full">
+                <span>Loading...</span>
+              </div>
+            ) : searchedCountries.length > 0 ? (
+              searchedCountries.map((country: any) => (
+                <Link
+                  key={country.cca2}
+                  to={`/country/${country.cca2}`}
+                  className="block p-2 hover:bg-gray-200"
+                  onClick={() => {
+                    setModalSearch(false);
+                    setSearchValue("");
+                  }}
+                >
+                  {country.name.common}
+                </Link>
+              ))
+            ) : (
+              <div className="flex justify-center items-center h-full">
+                <span>No results found</span>
+              </div>
+            )
+          }
         </div>
       </div>
 
