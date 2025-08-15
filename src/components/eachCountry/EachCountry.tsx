@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const EachCountry: React.FC<any> = ({ country }) => {
   return (
     <>
-      <Link to={`/country/${country.name.common}`}>
+      <Link to={`/country/${country.name.official}`}>
         <div className="country px-3 py-2 rounded-md bg-[#035f53] text-white hover:scale-105 transition-all duration-300">
           <div className="block_img flex justify-center">
             <img

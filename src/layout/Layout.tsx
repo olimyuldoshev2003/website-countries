@@ -76,6 +76,9 @@ const Layout = () => {
   const handleModalClose = () => {
     setModalSearch(false);
     setIsFocused(false);
+    setMenuClass("menu_bar unclicked");
+    setPagesClass("pages_hidden");
+    setShowOverlay(false);
     setSearchValue("");
     document.body.style.overflow = "unset";
 
@@ -467,20 +470,26 @@ const Layout = () => {
               <span>Loading...</span>
             </div>
           ) : searchedCountries.length > 0 ? (
-            searchedCountries.map((country: any) => (
-              <Link
-                key={country.cca2}
-                to={`/country/${country.cca2}`}
-                className="block p-2 hover:bg-gray-200"
-                onClick={() => {
-                  handleModalClose();
-                }}
-              >
-                {country.name.common}
-              </Link>
-            ))
+            searchValue ? (
+              searchedCountries.map((country: any) => (
+                <Link
+                  key={country.cca2}
+                  to={`/country/${country.name.official}`}
+                  className="block p-2 hover:bg-gray-200"
+                  onClick={() => {
+                    handleModalClose();
+                  }}
+                >
+                  {country.name.common}
+                </Link>
+              ))
+            ) : (
+              <div className="flex justify-center items-center">
+                <span className="text-center">Search the country</span>
+              </div>
+            )
           ) : (
-            <div className="flex justify-center items-center h-full">
+            <div className="flex justify-center items-center">
               <span>No results found</span>
             </div>
           )}
