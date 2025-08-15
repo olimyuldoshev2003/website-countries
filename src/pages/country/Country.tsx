@@ -43,7 +43,7 @@ const Country = () => {
 
   return (
     <div className="country_page bg-[#035f53]">
-      <div className="container_country_page max-w-[1440px] mx-auto">
+      <div className="container_country_page max-w-[1440px] mx-auto py-10">
         <div className="block_country_name">
           <h1 className="text-white text-center text-[24px] font-bold">
             {country?.name?.common}
