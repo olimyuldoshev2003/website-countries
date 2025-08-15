@@ -166,55 +166,6 @@ const Country = () => {
             </h2>
           )}
 
-          {country?.cca2 && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">CCA2: </span>
-              {country.cca2}
-            </h2>
-          )}
-
-          {country?.cca3 && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">CCA3: </span>
-              {country.cca3}
-            </h2>
-          )}
-
-          {country?.ccn3 && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">CCN3: </span>
-              {country.ccn3}
-            </h2>
-          )}
-
-          {country?.cioc && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">CIOC: </span>
-              {country.cioc}
-            </h2>
-          )}
-
-          {country?.status && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">Status of this county: </span>
-              {country.status}
-            </h2>
-          )}
-
-          {country?.flag && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">Flag: </span>
-              {country.flag}
-            </h2>
-          )}
-
-          {country?.fifa && (
-            <h2 className="text-[20px] font-bold text-center text-white">
-              <span className="font-normal">Fifa: </span>
-              {country.fifa}
-            </h2>
-          )}
-
           {country?.startOfWeek && (
             <h2 className="text-[20px] font-bold text-center text-white">
               <span className="font-normal">Start of week: </span>
@@ -329,11 +280,60 @@ const Country = () => {
             <span className="font-normal">the United Nations member.</span>
           </h2>
 
+          {country?.status && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">Status of this county: </span>
+              {country.status}
+            </h2>
+          )}
+
+          {country?.flag && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">Flag: </span>
+              {country.flag}
+            </h2>
+          )}
+
+          {country?.fifa && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">Fifa: </span>
+              {country.fifa}
+            </h2>
+          )}
+
+          {country?.cca2 && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">CCA2: </span>
+              {country.cca2}
+            </h2>
+          )}
+
+          {country?.cca3 && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">CCA3: </span>
+              {country.cca3}
+            </h2>
+          )}
+
+          {country?.ccn3 && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">CCN3: </span>
+              {country.ccn3}
+            </h2>
+          )}
+
+          {country?.cioc && (
+            <h2 className="text-[20px] font-bold text-center text-white">
+              <span className="font-normal">CIOC: </span>
+              {country.cioc}
+            </h2>
+          )}
+
           <div className="block_text_and_img_maps">
             <h1 className="text-[16px] text-center font-bold text-white">
               See in map (Google Map or Open Street Map)
             </h1>
-            <div className="block_img_maps flex justify-center gap-[20px] mt-[20px]">
+            <div className="block_img_maps flex justify-center items-center gap-[20px] mt-[20px] ">
               {country.maps?.googleMaps && (
                 <a
                   href={country.maps.googleMaps}
@@ -360,7 +360,12 @@ const Country = () => {
                   />
                 </a>
               )}
-
+              <h1 className="text-white text-[21px]">{`->`}</h1>
+              <img
+                className="h-[50px] object-contain"
+                src={country.flags.svg}
+                alt=""
+              />
             </div>
           </div>
         </div>
