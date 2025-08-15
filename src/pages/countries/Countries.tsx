@@ -68,7 +68,7 @@ const Countries = () => {
   return (
     <>
       <div className="countries_page max-w-[1440px] mx-auto">
-        <div className="block_search_and_text">
+        <section className="block_search_and_text">
           <h1 className="text-center text-[25px] font-bold">
             Founded {filteredCountriesByRegion?.length} countries
           </h1>
@@ -108,8 +108,8 @@ const Countries = () => {
               </Select>
             </FormControl>
           </div>
-        </div>
-        <div className="block_countries">
+        </section>
+        <section className="block_countries">
           {loadingCountries ? (
             <div className="flex justify-center mt-3">
               <div className="loader"></div>
@@ -133,7 +133,7 @@ const Countries = () => {
               </div>
             </div>
           )}
-        </div>
+        </section>
       </div>
     </>
   );

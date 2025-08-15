@@ -122,7 +122,6 @@ interface AsyncThunkConfig {
 export const getCountries = createAsyncThunk<Country[], any, AsyncThunkConfig>(
   "api/getCountries",
   async (searchValue, { rejectWithValue }) => {
-    // Now accepts string | undefined
     try {
       const fields = [
         "name",
@@ -199,6 +198,7 @@ export const getCountries = createAsyncThunk<Country[], any, AsyncThunkConfig>(
     }
   }
 );
+
 export const getSearchedCountries = createAsyncThunk<
   Country[],
   any,
@@ -277,6 +277,67 @@ export const getSearchedCountries = createAsyncThunk<
     }
     return rejectWithValue(
       "An unknown error occurred while fetching countries"
+    );
+  }
+});
+
+export const getCountriesHomePage = createAsyncThunk<
+  Country[],
+  void,
+  AsyncThunkConfig
+>("api/getCountriesHomePage", async (_, { rejectWithValue }) => {
+  try {
+    const fields = [
+      "name",
+      // "tld",
+      // "cca2",
+      // "ccn3",
+      // "cioc",
+      // "independent",
+      // "status",
+      // "unMember",
+      // "currencies",
+      // "idd",
+      "capital",
+      // "altSpellings",
+      "region",
+      "subregion",
+      "languages",
+      // "latlng",
+      // "landlocked",
+      // "borders",
+      // "area",
+      // "demonyms",
+      // "cca3",
+      // "translations",
+      // "flag",
+      // "maps",
+      "population",
+      // "gini",
+      // "fifa",
+      // "car",
+      // "timezones",
+      // "continents",
+      "flags",
+      "coatOfArms",
+      // "startOfWeek",
+      // "capitalInfo",
+      // "postalCode",
+    ];
+
+    const { data } = await axios.get<Country[]>(
+      `${import.meta.env.VITE_API_REST_COUNTRIES}/${
+        import.meta.env.VITE_API_ALL_COUNTRIES
+      }?fields=${fields.join(",")}`
+    );
+    // Ensure we always return an array
+    return Array.isArray(data) ? data : [data];
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+    return rejectWithValue(
+      "An unknown error occurred while fetching countries for the home page"
     );
   }
 });

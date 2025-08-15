@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import "./style.css";
 import { useEffect, useRef, useState } from "react";
 import logoHeader from "../assets/logo_rest_countries.png";
@@ -9,6 +9,7 @@ import { getSearchedCountries } from "../api/api";
 
 const Layout = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   // States
   const [menuClass, setMenuClass] = useState("menu_bar unclicked");
@@ -199,7 +200,11 @@ const Layout = () => {
             <ul className="sm:hidden md:flex md:items-center md:gap-2">
               <li>
                 <Link
-                  className="text-[17px] text-white hover:underline font-[500]"
+                  className={`${
+                    location.pathname === "/"
+                      ? `underline text-[red]`
+                      : `text-white`
+                  } text-[17px] hover:underline font-[500]`}
                   to="/"
                 >
                   Home
@@ -207,7 +212,11 @@ const Layout = () => {
               </li>
               <li>
                 <Link
-                  className="text-[17px] text-white hover:underline font-[500]"
+                  className={`${
+                    location.pathname === "/countries"
+                      ? `underline text-[red]`
+                      : `text-white`
+                  } text-[17px] hover:underline font-[500]`}
                   to="/countries"
                 >
                   Countries
@@ -302,7 +311,11 @@ const Layout = () => {
         <ul className="flex flex-col items-center justify-center gap-[20px]">
           <li>
             <Link
-              className="text-[17px] text-white hover:underline font-[500]"
+              className={`${
+                location.pathname === "/"
+                  ? `underline text-[red]`
+                  : `text-white`
+              } text-[17px] hover:underline font-[500]`}
               to="/"
               onClick={handleLinkClick}
             >
@@ -311,7 +324,11 @@ const Layout = () => {
           </li>
           <li>
             <Link
-              className="text-[17px] text-white hover:underline font-[500]"
+              className={`${
+                location.pathname === "/countries"
+                  ? `underline text-[red]`
+                  : `text-white`
+              } text-[17px] hover:underline font-[500]`}
               to="/countries"
               onClick={handleLinkClick}
             >
