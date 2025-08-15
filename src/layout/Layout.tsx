@@ -19,6 +19,12 @@ const Layout = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const [modalSearch, setModalSearch] = useState<boolean>(false);
+  // const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
+
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   // Refs
   const menuRef = useRef<HTMLDivElement>(null);
@@ -27,32 +33,13 @@ const Layout = () => {
   const desktopInputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
-  // Track window size
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  //States frtom Redux Toolkit
-
+  // Redux states
   const searchedCountries = useAppSelector(
     (state) => state.restCountriesSlice.searchedCountries
   );
   const loadingSearchedCountries = useAppSelector(
     (state) => state.restCountriesSlice.loadingSearchedCountries
   );
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Toggle mobile menu
   const toggleMenu = () => {
@@ -71,11 +58,6 @@ const Layout = () => {
     }
     setIsMenuClicked(!isMenuClicked);
   };
-  const handleLinkClick = () => {
-    if (isMenuClicked) {
-      toggleMenu();
-    }
-  };
 
   const handleSearchFocus = () => {
     setIsFocused(true);
@@ -84,15 +66,68 @@ const Layout = () => {
   };
 
   const handleSearchBlur = () => {
-    setIsFocused(false);
-    document.body.style.overflow = "unset";
+    // Only blur if modal is being closed
+    if (!modalSearch) {
+      setIsFocused(false);
+      document.body.style.overflow = "unset";
+    }
   };
 
-  function handleCloseModalRegions() {
-    setModalRegions(false);
-  }
+  const handleModalClose = () => {
+    setModalSearch(false);
+    setIsFocused(false);
+    setSearchValue("");
+    document.body.style.overflow = "unset";
 
-  // Close menu when clicking outside
+    // Properly blur the active input
+    if (
+      desktopInputRef.current &&
+      document.activeElement === desktopInputRef.current
+    ) {
+      desktopInputRef.current.blur();
+    }
+    if (
+      mobileInputRef.current &&
+      document.activeElement === mobileInputRef.current
+    ) {
+      mobileInputRef.current.blur();
+    }
+  };
+
+  const handleLinkClick = () => {
+    if (isMenuClicked) {
+      toggleMenu();
+    }
+  };
+
+  const handleCloseModalRegions = () => {
+    setModalRegions(false);
+    setMenuClass("menu_bar unclicked");
+    setPagesClass("pages_hidden");
+    setShowOverlay(false);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      // setIsMobileView(mobile);
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+
+      // When switching to desktop, ensure proper focus/blur state
+      if (!mobile && modalSearch && desktopInputRef.current) {
+        desktopInputRef.current.focus();
+      } else if (mobile && modalSearch && mobileInputRef.current) {
+        mobileInputRef.current.focus();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [modalSearch]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -178,7 +213,7 @@ const Layout = () => {
             </ul>
           </nav>
 
-          {/* Desktop Search Field - Updated */}
+          {/* Desktop Search Field */}
           <div className="block_input_search_and_btn_regions_modal sm:hidden md:flex md:items-center md:gap-2">
             <TextField
               inputRef={desktopInputRef}
@@ -206,7 +241,7 @@ const Layout = () => {
               label="Search Countries"
               variant="outlined"
               type="search"
-              onFocus={() => handleSearchFocus()}
+              onFocus={handleSearchFocus}
               onBlur={handleSearchBlur}
               value={searchValue}
               onChange={(
@@ -300,9 +335,7 @@ const Layout = () => {
             variant="outlined"
             type="search"
             fullWidth
-            onFocus={() => {
-              handleSearchFocus();
-            }}
+            onFocus={handleSearchFocus}
             value={searchValue}
             onChange={(
               event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -421,41 +454,36 @@ const Layout = () => {
         ref={modalSearchRef}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
-            setModalSearch(false);
-            setSearchValue("");
-            document.body.style.overflow = "unset";
+            handleModalClose();
           }
         }}
       >
         <div
-          className={`modal_search bg-white p-[10px] absolute top-[20px] w-[77%] md:right-[40px] shadow-2xl rounded-md z-50 max-h-[80vh] overflow-auto`}
+          className={`modal_search bg-white p-[10px] absolute top-[20px] w-[77%] md:right-[40px] shadow-2xl rounded-md z-50 md:max-h-[50vh] sm:max-h-[30vh] overflow-auto`}
           onClick={(e) => e.stopPropagation()}
         >
-          {
-            loadingSearchedCountries ? (
-              <div className="flex justify-center items-center h-full">
-                <span>Loading...</span>
-              </div>
-            ) : searchedCountries.length > 0 ? (
-              searchedCountries.map((country: any) => (
-                <Link
-                  key={country.cca2}
-                  to={`/country/${country.cca2}`}
-                  className="block p-2 hover:bg-gray-200"
-                  onClick={() => {
-                    setModalSearch(false);
-                    setSearchValue("");
-                  }}
-                >
-                  {country.name.common}
-                </Link>
-              ))
-            ) : (
-              <div className="flex justify-center items-center h-full">
-                <span>No results found</span>
-              </div>
-            )
-          }
+          {loadingSearchedCountries ? (
+            <div className="flex justify-center items-center h-full">
+              <span>Loading...</span>
+            </div>
+          ) : searchedCountries.length > 0 ? (
+            searchedCountries.map((country: any) => (
+              <Link
+                key={country.cca2}
+                to={`/country/${country.cca2}`}
+                className="block p-2 hover:bg-gray-200"
+                onClick={() => {
+                  handleModalClose();
+                }}
+              >
+                {country.name.common}
+              </Link>
+            ))
+          ) : (
+            <div className="flex justify-center items-center h-full">
+              <span>No results found</span>
+            </div>
+          )}
         </div>
       </div>
 
