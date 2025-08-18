@@ -20,12 +20,10 @@ const Layout = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const [modalSearch, setModalSearch] = useState<boolean>(false);
-  // const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
-
-  // const [windowSize, setWindowSize] = useState({
-  //   width: window.innerWidth,
-  //   height: window.innerHeight,
-  // });
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   // Refs
   const menuRef = useRef<HTMLDivElement>(null);
@@ -42,6 +40,19 @@ const Layout = () => {
     (state) => state.restCountriesSlice.loadingSearchedCountries
   );
 
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Toggle mobile menu
   const toggleMenu = () => {
     if (!isMenuClicked) {
@@ -50,7 +61,7 @@ const Layout = () => {
       setShowOverlay(true);
       document.body.classList.add("scroll_hidden");
       document.body.classList.remove("scroll_visible");
-    } else {  
+    } else {
       setMenuClass("menu_bar unclicked");
       setPagesClass("pages_hidden");
       setShowOverlay(false);
@@ -67,7 +78,6 @@ const Layout = () => {
   };
 
   const handleSearchBlur = () => {
-    // Only blur if modal is being closed
     if (!modalSearch) {
       setIsFocused(false);
       document.body.style.overflow = "unset";
@@ -83,7 +93,6 @@ const Layout = () => {
     setSearchValue("");
     document.body.style.overflow = "unset";
 
-    // Properly blur the active input
     if (
       desktopInputRef.current &&
       document.activeElement === desktopInputRef.current
@@ -111,27 +120,6 @@ const Layout = () => {
     setShowOverlay(false);
   };
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const mobile = window.innerWidth < 768;
-  //     // setIsMobileView(mobile);
-  //     setWindowSize({
-  //       width: window.innerWidth,
-  //       height: window.innerHeight,
-  //     });
-
-  //     // When switching to desktop, ensure proper focus/blur state
-  //     if (!mobile && modalSearch && desktopInputRef.current) {
-  //       desktopInputRef.current.focus();
-  //     } else if (mobile && modalSearch && mobileInputRef.current) {
-  //       mobileInputRef.current.focus();
-  //     }
-  //   };
-
-  //   window.addEventListener("resize", handleResize);
-  //   return () => window.removeEventListener("resize", handleResize);
-  // }, [modalSearch]);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -155,17 +143,6 @@ const Layout = () => {
     };
   }, [isMenuClicked]);
 
-  // // Handle search modal state across screen sizes
-  // useEffect(() => {
-  //   if (modalSearch && windowSize.width >= 768) {
-  //     // When resizing to desktop/tablet, ensure modal stays open
-  //     setModalSearch(true);
-  //     if (desktopInputRef.current) {
-  //       desktopInputRef.current.focus();
-  //     }
-  //   }
-  // }, [windowSize.width, modalSearch]);
-
   useEffect(() => {
     if (searchValue.trim() !== "") {
       dispatch(getSearchedCountries(searchValue));
@@ -173,6 +150,30 @@ const Layout = () => {
       dispatch(getSearchedCountries(""));
     }
   }, [searchValue, dispatch]);
+
+  // Calculate responsive width for TextField
+  const getTextFieldWidth = () => {
+    if (windowSize.width >= 1440) {
+      return isFocused ? "1200px" : "250px";
+    } else if (windowSize.width >= 1024) {
+      return isFocused ? "805px" : "200px";
+    } else if (windowSize.width >= 768) {
+      return isFocused ? "550px" : "180px";
+    }
+    return isFocused ? "300px" : "150px";
+  };
+
+  // Calculate modal search width
+  const getModalSearchWidth = () => {
+    if (windowSize.width >= 1440) {
+      return "1200px";
+    } else if (windowSize.width >= 1024) {
+      return "60%";
+    } else if (windowSize.width >= 768) {
+      return "70%";
+    }
+    return "85%";
+  };
 
   return (
     <div className="layout_component">
@@ -225,28 +226,39 @@ const Layout = () => {
             </ul>
           </nav>
 
-          {/* Desktop Search Field */}
-          <div className="block_input_search_and_btn_regions_modal sm:hidden md:flex md:items-center md:gap-2">
+          {/* Responsive Desktop Search Field */}
+          <div className="block_input_search_and_btn_regions_modal sm:hidden md:flex md:items-center md:gap-2 relative">
             <TextField
               inputRef={desktopInputRef}
               sx={{
                 transition: "all 0.3s ease",
-                width: isFocused ? "80%" : "200px",
-                "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+                width: getTextFieldWidth(),
+                "& .MuiInputLabel-root": {
+                  color: "rgba(255, 255, 255, 0.7)",
+                  transition: "all 0.3s ease",
+                },
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "rgba(255, 255, 255, 0.7)" },
+                  transition: "all 0.3s ease",
+                  "& fieldset": {
+                    borderColor: "rgba(255, 255, 255, 0.7)",
+                    transition: "all 0.3s ease",
+                  },
                   "&:hover fieldset": {
                     borderColor: "rgba(255, 255, 255, 0.7)",
                   },
-                  "&.Mui-focused fieldset": { borderColor: "#90caf9" },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#90caf9",
+                    transition: "all 0.3s ease",
+                  },
                 },
-                "& .MuiInputBase-input": { color: "white" },
+                "& .MuiInputBase-input": {
+                  color: "white",
+                  transition: "all 0.3s ease",
+                },
                 ...(isFocused && {
                   position: "absolute",
-                  right: 0,
-                  margin: `0 auto`,
-                  paddingRight: "40px",
-                  zIndex: `5`,
+                  right: "20px",
+                  zIndex: "5",
                 }),
               }}
               id="desktop-search-input"
@@ -266,11 +278,7 @@ const Layout = () => {
               variant="contained"
               className={`text-sm`}
               sx={{
-                ...(isFocused
-                  ? {
-                      display: "none",
-                    }
-                  : { display: "block" }),
+                ...(isFocused ? { display: "none" } : { display: "block" }),
               }}
               color="warning"
               onClick={() => {
@@ -305,6 +313,7 @@ const Layout = () => {
         </div>
       </header>
 
+      {/* Mobile Menu */}
       <div
         ref={menuRef}
         className={`pages_mobile_size ${pagesClass} md:hidden bg-[#020261] fixed top-[98px] py-[20px] w-full z-40`}
@@ -369,9 +378,7 @@ const Layout = () => {
             className="text-sm"
             color="warning"
             fullWidth
-            sx={{
-              marginTop: "20px",
-            }}
+            sx={{ marginTop: "20px" }}
             onClick={() => {
               setModalRegions(true);
               setMenuClass("menu_bar unclicked");
@@ -385,6 +392,7 @@ const Layout = () => {
         </div>
       </div>
 
+      {/* Regions Modal */}
       <Dialog
         open={modalRegions}
         onClose={handleCloseModalRegions}
@@ -463,6 +471,7 @@ const Layout = () => {
         </div>
       </Dialog>
 
+      {/* Search Modal */}
       <div
         className={`background_modal_search fixed ${
           isMenuClicked
@@ -481,7 +490,8 @@ const Layout = () => {
         }}
       >
         <div
-          className={`modal_search bg-white p-[10px] absolute top-[20px] w-[77%] md:right-[40px] shadow-2xl rounded-md z-50 md:max-h-[50vh] sm:max-h-[30vh] overflow-auto`}
+          className={`modal_search bg-white p-[10px] absolute top-[20px] shadow-2xl rounded-md z-50 sm:max-h-[30vh] md:max-h-[41vh] overflow-auto`}
+          style={{ width: getModalSearchWidth() }}
           onClick={(e) => e.stopPropagation()}
         >
           {loadingSearchedCountries ? (
