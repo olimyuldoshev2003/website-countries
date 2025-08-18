@@ -466,7 +466,7 @@ const Layout = () => {
           isMenuClicked
             ? `sm:top-[21.6em] flex`
             : `sm:top-[6.2rem] sm:hidden md:flex`
-        } md:top-[98px] left-0 w-full h-full z-50 justify-center items-center bg-black bg-opacity-50 ${
+        } md:top-[100px] left-0 w-full h-full z-50 justify-center items-center bg-black bg-opacity-50 ${
           modalSearch
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
