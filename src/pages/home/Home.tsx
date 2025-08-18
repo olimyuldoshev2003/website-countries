@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <div className="home_component max-w-[1440px] mx-auto">
-      <section className="section_1_countries_by_population mt-4">
+      <section className="section_1_countries_by_population mt-9">
         <div className="block_title">
           <h1 className="text-[20px] font-bold text-center">
             Countries by Population
@@ -38,7 +38,7 @@ const Home = () => {
             </h1>
           </div>
         ) : (
-          <div className="founded_countries_block_home_page mt-7">
+          <div className="founded_countries_block_home_page mt-3">
             <div className="each_countries_block px-5">
               {[...countriesHomePage]
                 .sort((a, b) => b.population - a.population) // Sort by population (descending)
@@ -50,7 +50,7 @@ const Home = () => {
           </div>
         )}
       </section>
-      <section className="section_2_countries_by_language">
+      <section className="section_2_countries_by_language mt-9">
         <div className="block_title">
           <h1 className="text-[20px] font-bold text-center">
             Countries by language
@@ -67,7 +67,7 @@ const Home = () => {
             </h1>
           </div>
         ) : (
-          <div className="founded_countries_block_home_page mt-7">
+          <div className="founded_countries_block_home_page mt-3">
             <div className="each_countries_block px-5">
               {[...countriesHomePage] // Create a copy of the array
                 .sort((a: any, b: any) => {
@@ -85,7 +85,7 @@ const Home = () => {
           </div>
         )}
       </section>
-      <section className="section_3_countries_by_name">
+      <section className="section_3_countries_by_name mt-9">
         <div className="block_title">
           <h1 className="text-[20px] font-bold text-center">
             Countries by name
@@ -102,7 +102,7 @@ const Home = () => {
             </h1>
           </div>
         ) : (
-          <div className="founded_countries_block_home_page mt-7">
+          <div className="founded_countries_block_home_page mt-3">
             <div className="each_countries_block px-5">
               {[...countriesHomePage] // Create a copy of the array
                 .sort((a: any, b: any) => {
