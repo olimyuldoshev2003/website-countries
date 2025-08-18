@@ -22,10 +22,10 @@ const Layout = () => {
   const [modalSearch, setModalSearch] = useState<boolean>(false);
   // const [isMobileView, setIsMobileView] = useState(window.innerWidth < 768);
 
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  // const [windowSize, setWindowSize] = useState({
+  //   width: window.innerWidth,
+  //   height: window.innerHeight,
+  // });
 
   // Refs
   const menuRef = useRef<HTMLDivElement>(null);
@@ -111,26 +111,26 @@ const Layout = () => {
     setShowOverlay(false);
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      // setIsMobileView(mobile);
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const mobile = window.innerWidth < 768;
+  //     // setIsMobileView(mobile);
+  //     setWindowSize({
+  //       width: window.innerWidth,
+  //       height: window.innerHeight,
+  //     });
 
-      // When switching to desktop, ensure proper focus/blur state
-      if (!mobile && modalSearch && desktopInputRef.current) {
-        desktopInputRef.current.focus();
-      } else if (mobile && modalSearch && mobileInputRef.current) {
-        mobileInputRef.current.focus();
-      }
-    };
+  //     // When switching to desktop, ensure proper focus/blur state
+  //     if (!mobile && modalSearch && desktopInputRef.current) {
+  //       desktopInputRef.current.focus();
+  //     } else if (mobile && modalSearch && mobileInputRef.current) {
+  //       mobileInputRef.current.focus();
+  //     }
+  //   };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [modalSearch]);
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, [modalSearch]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -155,16 +155,16 @@ const Layout = () => {
     };
   }, [isMenuClicked]);
 
-  // Handle search modal state across screen sizes
-  useEffect(() => {
-    if (modalSearch && windowSize.width >= 768) {
-      // When resizing to desktop/tablet, ensure modal stays open
-      setModalSearch(true);
-      if (desktopInputRef.current) {
-        desktopInputRef.current.focus();
-      }
-    }
-  }, [windowSize.width, modalSearch]);
+  // // Handle search modal state across screen sizes
+  // useEffect(() => {
+  //   if (modalSearch && windowSize.width >= 768) {
+  //     // When resizing to desktop/tablet, ensure modal stays open
+  //     setModalSearch(true);
+  //     if (desktopInputRef.current) {
+  //       desktopInputRef.current.focus();
+  //     }
+  //   }
+  // }, [windowSize.width, modalSearch]);
 
   useEffect(() => {
     if (searchValue.trim() !== "") {
