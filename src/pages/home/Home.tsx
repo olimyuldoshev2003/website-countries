@@ -63,7 +63,7 @@ const Home = () => {
         ) : !loadingCountriesHomePage && countriesHomePage?.length === 0 ? (
           <div>
             <h1 className="text-center text-[15px] font-bold mt-3">
-              Countries not by language found
+              Countries by language not found
             </h1>
           </div>
         ) : (
