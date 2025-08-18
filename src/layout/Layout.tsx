@@ -434,7 +434,7 @@ const Layout = () => {
             America
           </Link>
           <Link
-            to={`/region/atlantic`}
+            to={`/region/antarctic`}
             className="region_4"
             onClick={() => {
               setModalRegions(false);
