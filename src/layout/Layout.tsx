@@ -275,6 +275,7 @@ const Layout = () => {
               color="warning"
               onClick={() => {
                 setModalRegions(true);
+                setModalSearch(false);
               }}
             >
               Open Modal Regions
@@ -376,6 +377,7 @@ const Layout = () => {
               setMenuClass("menu_bar unclicked");
               setPagesClass("pages_hidden");
               setShowOverlay(false);
+              setModalSearch(false);
             }}
           >
             Open Modal Regions
