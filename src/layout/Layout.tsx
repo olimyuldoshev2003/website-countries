@@ -74,7 +74,7 @@ const Layout = () => {
     }
   };
 
-  const handleModalClose = () => {
+  const handleModalSearchClose = () => {
     setModalSearch(false);
     setIsFocused(false);
     setMenuClass("menu_bar unclicked");
@@ -275,7 +275,7 @@ const Layout = () => {
               color="warning"
               onClick={() => {
                 setModalRegions(true);
-                handleModalClose();
+                handleModalSearchClose();
               }}
             >
               Open Modal Regions
@@ -377,7 +377,7 @@ const Layout = () => {
               setMenuClass("menu_bar unclicked");
               setPagesClass("pages_hidden");
               setShowOverlay(false);
-              handleModalClose();
+              handleModalSearchClose();
             }}
           >
             Open Modal Regions
@@ -476,7 +476,7 @@ const Layout = () => {
         ref={modalSearchRef}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
-            handleModalClose();
+            handleModalSearchClose();
           }
         }}
       >
@@ -496,7 +496,7 @@ const Layout = () => {
                   to={`/country/${country.name.official}`}
                   className="block p-2 hover:bg-gray-200"
                   onClick={() => {
-                    handleModalClose();
+                    handleModalSearchClose();
                   }}
                 >
                   {country.name.common}
