@@ -306,7 +306,7 @@ const Layout = () => {
 
       <div
         ref={menuRef}
-        className={`pages_mobile_size ${pagesClass} md:hidden bg-[#020261] fixed top-[100px] py-[20px] w-full z-40`}
+        className={`pages_mobile_size ${pagesClass} md:hidden bg-[#020261] fixed top-[98px] py-[20px] w-full z-40`}
       >
         <ul className="flex flex-col items-center justify-center gap-[20px]">
           <li>
@@ -464,9 +464,9 @@ const Layout = () => {
       <div
         className={`background_modal_search fixed ${
           isMenuClicked
-            ? `sm:top-[21.7rem] flex`
+            ? `sm:top-[21.6em] flex`
             : `sm:top-[6.2rem] sm:hidden md:flex`
-        } md:top-[100px] left-0 w-full h-full z-50 justify-center items-center bg-black bg-opacity-50 ${
+        } md:top-[98px] left-0 w-full h-full z-50 justify-center items-center bg-black bg-opacity-50 ${
           modalSearch
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
