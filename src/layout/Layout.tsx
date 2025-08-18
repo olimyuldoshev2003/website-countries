@@ -50,7 +50,7 @@ const Layout = () => {
       setShowOverlay(true);
       document.body.classList.add("scroll_hidden");
       document.body.classList.remove("scroll_visible");
-    } else {
+    } else {  
       setMenuClass("menu_bar unclicked");
       setPagesClass("pages_hidden");
       setShowOverlay(false);
