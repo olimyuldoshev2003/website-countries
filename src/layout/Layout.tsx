@@ -154,7 +154,7 @@ const Layout = () => {
   // Calculate responsive width for TextField
   const getTextFieldWidth = () => {
     if (windowSize.width >= 1440) {
-      return isFocused ? "1200px" : "250px";
+      return isFocused ? "1100px" : "250px";
     } else if (windowSize.width >= 1024) {
       return isFocused ? "805px" : "200px";
     } else if (windowSize.width >= 768) {
