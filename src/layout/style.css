@@ -34,7 +34,7 @@
 .pages_hidden {
   /* transform: translateY(100rem); */
   /* transform: translateY(-200px); */
-  transform: translateX(700px);
+  transform: translateX(870px);
   transition: all 0.5s;
   pointer-events: none;
   /* opacity: 0; */

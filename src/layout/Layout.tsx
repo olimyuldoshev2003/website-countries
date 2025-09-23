@@ -156,9 +156,9 @@ const Layout = () => {
     if (windowSize.width >= 1440) {
       return isFocused ? "1100px" : "250px";
     } else if (windowSize.width >= 1024) {
-      return isFocused ? "805px" : "200px";
+      return isFocused ? "680px" : "200px";
     } else if (windowSize.width >= 768) {
-      return isFocused ? "550px" : "180px";
+      return isFocused ? "430px" : "180px";
     }
     return isFocused ? "300px" : "150px";
   };
